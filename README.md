@@ -1,6 +1,11 @@
 # Velx Discord Bot
 
-Velx is a Discord bot written in Go (Golang) using the DiscordGo library. It provides various moderation and fun commands for your Discord server.
+Velx is a Discord bot written in Go (Golang) by KaynHvH using the DiscordGo library. It provides various moderation and fun commands for your Discord server.
+
+## TODO
+- Slash commands
+- More features
+- Better code structuring
 
 ## Features
 
@@ -8,50 +13,40 @@ Velx is a Discord bot written in Go (Golang) using the DiscordGo library. It pro
 - `velx ban <@user> <reason>` - Bans a user with a specified reason.
 - `velx kick <@user> <reason>` - Kicks a user with a specified reason.
 - `velx mute <@user> <reason>` - Mutes a user with a specified reason.
+- `velx unmute <@user>` - Unmutes a user.
+- `velx nick/nickname <@user> <nickname>` - Changes user nickname.
+- `velx poll <content>` - Creates a poll with reactions.
 
 - **Fun Commands:**
-- `velx dog` - Sends a random dog picture.
+- `velx dog` - Sends a random dog picture with API.
 - `velx answer <question>` - Provides a random answer to a user's question.
 - `velx whois <@user>` - Provides information about a Discord user.
+- `velx avatar <@user>` - Shows up user's avatar.
+- `velx dice` - Rolls the dice.
 
 - **Help Command:**
 - `velx help` - Displays a list of available commands and their descriptions.
 ## Getting Started
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/velx-discord-bot.git
-cd velx-discord-bot
+git clone https://github.com/KaynHvH/velx-discord-bot.git
+cd velxBOT
 ```
-2. Create a `.env` file with your Discord bot token:
+2. Create a `.env` file with your Discord bot token and prefix:
 ```
 TOKEN=your_bot_token_here 
+PREFIX=velx
 ```
 
 3. Run the bot:
 ```bash
-go run main.go
+make
 ```
 
-## Commands
+## PREFIX
 
 - Prefix: `velx`
-
-### Moderation Commands
-
-- `velx ban <@user> <reason>` - Bans a user with a specified reason.
-- `velx kick <@user> <reason>` - Kicks a user with a specified reason.
-- `velx mute <@user> <reason>` - Mutes a user with a specified reason.
-
-### Fun Commands
-
-- `velx dog` - Sends a random dog picture.
-- `velx answer <question>` - Provides a random answer to a user's question.
-- `velx whois <@user>` - Provides information about a Discord user.
-
-### Help Command
-
-- `velx help` - Displays a list of available commands and their descriptions.
-
+- In the future: slash commands
 ## Contributing
 
 If you would like to contribute to the project, please follow the [Contributing Guidelines](CONTRIBUTING.md).

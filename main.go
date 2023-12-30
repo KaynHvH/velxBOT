@@ -7,12 +7,14 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"velxBOT/commands"
+	"velxBOT/commands/fun"
+	"velxBOT/commands/help"
+	"velxBOT/commands/moderation"
 )
 
 func main() {
-	err := godotenv.Load(".env")
-	if err != nil {
+
+	if err := godotenv.Load(".env"); err != nil {
 		log.Fatalf("Some error occured. Err: %s", err)
 	}
 
@@ -22,9 +24,11 @@ func main() {
 		return
 	}
 
-	velx.AddHandler(commands.HandleFunCommands)
-	velx.AddHandler(commands.HandleModerationCommands)
-	velx.AddHandler(commands.HandleHelpCommand)
+	//Handlers
+	velx.AddHandler(fun.HandleFunCommands)
+	velx.AddHandler(moderation.HandleModerationCommands)
+	velx.AddHandler(help.HandleHelpCommand)
+
 	velx.Identify.Intents = discordgo.IntentsAllWithoutPrivileged
 
 	err = velx.Open()
@@ -36,6 +40,10 @@ func main() {
 
 	//Cleanly close down the Discord session
 	log.Println("Bot is running!")
+	waitForTerminationSignal()
+}
+
+func waitForTerminationSignal() {
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc
