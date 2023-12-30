@@ -29,7 +29,7 @@ Velx is a Discord bot written in Go (Golang) by KaynHvH using the DiscordGo libr
 ## Getting Started
 1. Clone the repository:
 ```bash
-git clone https://github.com/KaynHvH/velx-discord-bot.git
+git clone https://github.com/KaynHvH/velxBOT.git
 cd velxBOT
 ```
 2. Create a `.env` file with your Discord bot token and prefix:
