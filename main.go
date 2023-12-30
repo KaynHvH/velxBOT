@@ -1,41 +1,61 @@
 package main
 
 import (
-	"github.com/bwmarrin/discordgo"
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"velxBOT/commands"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatalf("Some error occured. Err: %s", err)
+	if err := loadEnv(); err != nil {
+		log.Fatalf("Error loading environment variables: %s", err)
 	}
 
-	velx, err := discordgo.New("Bot " + os.Getenv("TOKEN"))
+	velx, err := createDiscordSession()
 	if err != nil {
-		log.Fatal("Can't create Discord session, ", err)
-		return
-	}
-
-	velx.AddHandler(commands.HandleFunCommands)
-	velx.AddHandler(commands.HandleModerationCommands)
-	velx.AddHandler(commands.HandleHelpCommand)
-	velx.Identify.Intents = discordgo.IntentsAllWithoutPrivileged
-
-	err = velx.Open()
-	if err != nil {
-		log.Fatal("Can't open bot, ", err)
+		log.Fatalf("Error creating Discord session: %s", err)
 		return
 	}
 	defer velx.Close()
 
-	//Cleanly close down the Discord session
+	h := commands.NewHandler(velx)
+	registerHandlers(velx, h)
+
+	startBot(velx)
+}
+
+func loadEnv() error {
+	return godotenv.Load(".env")
+}
+
+func createDiscordSession() (*discordgo.Session, error) {
+	token := "Bot " + os.Getenv("TOKEN")
+	return discordgo.New(token)
+}
+
+func registerHandlers(velx *discordgo.Session, h *commands.Handler) {
+	velx.AddHandler(h.HandleHelpCommand)
+	velx.AddHandler(h.HandleModerationCommands)
+	velx.Identify.Intents = discordgo.IntentsAllWithoutPrivileged
+}
+
+func startBot(velx *discordgo.Session) {
+	err := velx.Open()
+	if err != nil {
+		log.Fatalf("Error opening bot: %s", err)
+		return
+	}
+
 	log.Println("Bot is running!")
+	waitForTerminationSignal()
+}
+
+func waitForTerminationSignal() {
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc

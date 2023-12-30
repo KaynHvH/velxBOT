@@ -2,14 +2,13 @@ package commands
 
 import (
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"strings"
+
+	"github.com/bwmarrin/discordgo"
 )
 
-const PREFIX string = "velx"
-
-func HandleHelpCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
-	if m.Author.ID == s.State.User.ID {
+func (h *Handler) HandleHelpCommand(m *discordgo.MessageCreate) {
+	if m.Author.ID == h.s.State.User.ID {
 		return
 	}
 
@@ -37,7 +36,7 @@ func HandleHelpCommand(s *discordgo.Session, m *discordgo.MessageCreate) {
 				},
 			}
 
-			s.ChannelMessageSendEmbed(m.ChannelID, &embed)
+			h.s.ChannelMessageSendEmbed(m.ChannelID, &embed)
 			return
 		}
 	}
